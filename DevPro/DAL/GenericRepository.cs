@@ -29,27 +29,17 @@ namespace DAL
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
         {
-            var query = DbSet.ToList<TEntity>().AsQueryable();
+            var list = DbSet.ToList();
+            var query = list.AsQueryable();
 
             if (filter != null)
             {
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+            query = includeProperties.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
-            else
-            {
-                return query.ToList();
-            }
+            return orderBy != null ? orderBy(query).ToList() : query.ToList();
         }
 
         public virtual TEntity GetById(object id)
@@ -64,7 +54,7 @@ namespace DAL
 
         public virtual void Delete(object id)
         {
-            TEntity entityToDelete = DbSet.Find(id);
+            var entityToDelete = DbSet.Find(id);
             Delete(entityToDelete);
         }
 
@@ -83,22 +73,20 @@ namespace DAL
             {
                 throw new ArgumentException("Cannot add a null entity.");
             }
-            var entry = Context.Entry<TEntity>(entityToUpdate);
+            var entry = Context.Entry(entityToUpdate);
 
-            if (entry.State == EntityState.Detached)
+            if (entry.State != EntityState.Detached) return;
+            var set = Context.Set<TEntity>();
+            var attachedEntity = set.Local.SingleOrDefault(e => e.Id == entityToUpdate.Id); 
+
+            if (attachedEntity != null)
             {
-                var set = Context.Set<TEntity>();
-                TEntity attachedEntity = set.Local.SingleOrDefault(e => e.Id == entityToUpdate.Id); // You need to have access to key
-
-                if (attachedEntity != null)
-                {
-                    var attachedEntry = Context.Entry(attachedEntity);
-                    attachedEntry.CurrentValues.SetValues(entityToUpdate);
-                }
-                else
-                {
-                    entry.State = EntityState.Modified; // This should attach entity
-                }
+                var attachedEntry = Context.Entry(attachedEntity);
+                attachedEntry.CurrentValues.SetValues(entityToUpdate);
+            }
+            else
+            {
+                entry.State = EntityState.Modified;
             }
         }
     }
