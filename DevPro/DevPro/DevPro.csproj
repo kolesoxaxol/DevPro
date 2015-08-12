@@ -205,7 +205,9 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FeedController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -324,9 +326,15 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\Resource\Edit.cshtml" />
+    <Content Include="Views\Resource\Create.cshtml" />
+    <Content Include="Views\Resource\Index.cshtml" />
+    <Content Include="Views\Resource\Details.cshtml" />
+    <Content Include="Views\Shared\_FeedList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Feed\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -335,9 +343,17 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
+      <Project>{36ee17f8-f12c-4113-9276-1765f0304dbf}</Project>
+      <Name>BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{f6b29729-cfc3-4722-921a-2b0a403d37fd}</Project>
       <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{b69bd52c-3f0c-468d-b320-14295b31d361}</Project>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

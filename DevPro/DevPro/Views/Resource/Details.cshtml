@@ -1,0 +1,47 @@
+﻿@model Model.Entities.Resource
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Resource</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Linq)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Linq)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Tag)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Tag)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LastUpdateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastUpdateDate)
+    </div>
+    
+   @Html.Partial("_FeedList", Model.Feed)
+    
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,4 +1,9 @@
 using System;
+using System.Web.Compilation;
+using BusinessLogic.IServices;
+using BusinessLogic.Services;
+using BusinessLogic.UnitOfWork;
+using DAL;
 using Microsoft.Practices.Unity;
 
 
@@ -36,7 +41,9 @@ namespace DevPro.App_Start
             // container.LoadConfiguration();
 
             // TODO: Register your types here
-            // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<IResourceService, ResourceService>();
+            container.RegisterType<IUnitOfWork, UnitOfWork>();
+            container.RegisterType<NewsAggregatorContext>();
         }
     }
 }
