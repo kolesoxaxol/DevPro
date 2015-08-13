@@ -2,7 +2,7 @@
 
 namespace DAL
 {
-    public class NewsAggregatorContextInitializer : DropCreateDatabaseAlways<NewsAggregatorContext>
+    public class NewsAggregatorContextInitializer : DropCreateDatabaseIfModelChanges<NewsAggregatorContext>
     {
         protected override void Seed(NewsAggregatorContext context)
         {

@@ -10,37 +10,71 @@
     <legend>Resource</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
+        @Html.DisplayNameFor(model => model.Name)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Linq)
+        @Html.DisplayNameFor(model => model.Url)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Linq)
+        @Html.DisplayFor(model => model.Url)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Tag)
+        @Html.DisplayNameFor(model => model.Tag)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Tag)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.LastUpdateDate)
+        @Html.DisplayNameFor(model => model.LastUpdateDate)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.LastUpdateDate)
     </div>
-    
-   @Html.Partial("_FeedList", Model.Feed)
-    
 
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.xPathBody)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.xPathBody)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.xPathAuthor)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.xPathAuthor)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.xPathDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.xPathDate)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.xPathTitle)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.xPathTitle)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(model => model.xPathFeed)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.xPathFeed)
+        @Html.ValidationMessageFor(model => model.xPathFeed)
+    </div>
 </fieldset>
+
+@Html.Partial("_FeedList", Model.Feed)
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

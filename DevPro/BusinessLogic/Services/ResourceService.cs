@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BusinessLogic.IServices;
 using BusinessLogic.UnitOfWork;
 using Model.Entities;
@@ -21,7 +22,7 @@ namespace BusinessLogic.Services
             {
                 throw new ArgumentNullException("resource is null");
             }
-
+            GetFeedList(resource);
             _unitOfWork.ResourceRepository.Insert(resource);
             _unitOfWork.Save();
         }
@@ -32,6 +33,7 @@ namespace BusinessLogic.Services
             {
                 throw new ArgumentNullException("resource is null");
             }
+             GetFeedList(resource);
             _unitOfWork.ResourceRepository.Update(resource);
             _unitOfWork.Save();
         }
@@ -59,6 +61,46 @@ namespace BusinessLogic.Services
         public IEnumerable<Resource> GetAllItems()
         {
             return _unitOfWork.ResourceRepository.Get(x => true);
+        }
+
+        public void GetFeedList(Resource resource)
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            htmlDoc.LoadHtml(resource.Url);
+            var feeds = new List<Feed>();
+
+            HtmlAgilityPack.HtmlNode root = htmlDoc.DocumentNode;
+
+            foreach (HtmlAgilityPack.HtmlNode currentFeed in root.SelectNodes((resource.xPathFeed)))
+            {
+                var feed = new Feed();
+
+                var body = currentFeed.SelectNodes(resource.xPathBody).FirstOrDefault();
+                if (body != null)
+                    feed.Body = body.InnerHtml;
+
+                var author = currentFeed.SelectNodes(resource.xPathAuthor).FirstOrDefault();
+                if (author != null)
+                    feed.Author = author.InnerHtml;
+
+                var title = currentFeed.SelectNodes(resource.xPathTitle).FirstOrDefault();
+                if (title != null)
+                    feed.Author = title.InnerHtml;
+
+                var date = currentFeed.SelectNodes(resource.xPathDate).FirstOrDefault();
+                if (date != null)
+                    feed.Author = date.InnerText;
+
+                feed.Resources = resource;
+                feeds.Add(feed);
+            }
+
+            resource.Feed = feeds;
         }
     }
 }

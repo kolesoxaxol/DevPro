@@ -24,11 +24,11 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Linq)
+            @Html.LabelFor(model => model.Url)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Linq)
-            @Html.ValidationMessageFor(model => model.Linq)
+            @Html.EditorFor(model => model.Url)
+            @Html.ValidationMessageFor(model => model.Url)
         </div>
 
         <div class="editor-label">
@@ -39,7 +39,53 @@
             @Html.ValidationMessageFor(model => model.Tag)
         </div>
 
-       
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastUpdateDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastUpdateDate)
+            @Html.ValidationMessageFor(model => model.LastUpdateDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.xPathBody)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.xPathBody)
+            @Html.ValidationMessageFor(model => model.xPathBody)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.xPathAuthor)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.xPathAuthor)
+            @Html.ValidationMessageFor(model => model.xPathAuthor)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.xPathDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.xPathDate)
+            @Html.ValidationMessageFor(model => model.xPathDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.xPathTitle)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.xPathTitle)
+            @Html.ValidationMessageFor(model => model.xPathTitle)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.xPathFeed)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.xPathFeed)
+            @Html.ValidationMessageFor(model => model.xPathFeed)
+        </div>
 
         <p>
             <input type="submit" value="Save" />
