@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using BusinessLogic.IServices;
 using BusinessLogic.UnitOfWork;
 using Model.Entities;
@@ -33,7 +34,7 @@ namespace BusinessLogic.Services
             {
                 throw new ArgumentNullException("resource is null");
             }
-             GetFeedList(resource);
+            GetFeedList(resource);
             _unitOfWork.ResourceRepository.Update(resource);
             _unitOfWork.Save();
         }
@@ -70,8 +71,13 @@ namespace BusinessLogic.Services
                 throw new ArgumentNullException();
             }
 
+            WebClient wClient = new WebClient();
+
+            
+
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
-            htmlDoc.LoadHtml(resource.Url);
+            htmlDoc.LoadHtml(wClient.DownloadString(resource.Url));
+
             var feeds = new List<Feed>();
 
             HtmlAgilityPack.HtmlNode root = htmlDoc.DocumentNode;
@@ -80,23 +86,24 @@ namespace BusinessLogic.Services
             {
                 var feed = new Feed();
 
-                var body = currentFeed.SelectNodes(resource.xPathBody).FirstOrDefault();
+                var body = currentFeed.SelectSingleNode(resource.xPathBody);
                 if (body != null)
                     feed.Body = body.InnerHtml;
 
-                var author = currentFeed.SelectNodes(resource.xPathAuthor).FirstOrDefault();
+                var author = currentFeed.SelectSingleNode(resource.xPathAuthor);
                 if (author != null)
                     feed.Author = author.InnerHtml;
 
-                var title = currentFeed.SelectNodes(resource.xPathTitle).FirstOrDefault();
+                var title = currentFeed.SelectSingleNode(resource.xPathTitle);
                 if (title != null)
-                    feed.Author = title.InnerHtml;
+                    feed.Title = title.InnerHtml;
 
-                var date = currentFeed.SelectNodes(resource.xPathDate).FirstOrDefault();
+                var date = currentFeed.SelectSingleNode(resource.xPathDate);
                 if (date != null)
-                    feed.Author = date.InnerText;
+                    feed.Date = new DateTime(date.GetAttributeValue("data-timestamp", 0));
 
                 feed.Resources = resource;
+                
                 feeds.Add(feed);
             }
 
