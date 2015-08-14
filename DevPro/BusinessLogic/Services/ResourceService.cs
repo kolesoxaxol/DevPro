@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using BusinessLogic.IServices;
 using BusinessLogic.UnitOfWork;
 using Model.Entities;
@@ -23,8 +24,8 @@ namespace BusinessLogic.Services
             {
                 throw new ArgumentNullException("resource is null");
             }
-            GetFeedList(resource);
             _unitOfWork.ResourceRepository.Insert(resource);
+            GetFeedList(resource);
             _unitOfWork.Save();
         }
 
@@ -72,8 +73,8 @@ namespace BusinessLogic.Services
             }
 
             WebClient wClient = new WebClient();
+          wClient.Encoding = Encoding.UTF8;
 
-            
 
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.LoadHtml(wClient.DownloadString(resource.Url));
@@ -99,12 +100,12 @@ namespace BusinessLogic.Services
                     feed.Title = title.InnerHtml;
 
                 var date = currentFeed.SelectSingleNode(resource.xPathDate);
-                if (date != null)
-                    feed.Date = new DateTime(date.GetAttributeValue("data-timestamp", 0));
-
-                feed.Resources = resource;
-                
-                feeds.Add(feed);
+               // if (date != null)
+               //     feed.Date = new DateTime(date.GetAttributeValue("data-timestamp", 0));
+                feed.Date = DateTime.Now;
+               feed.Resources = resource;
+               _unitOfWork.FeedRepository.Insert(feed);
+               feeds.Add(feed);
             }
 
             resource.Feed = feeds;
